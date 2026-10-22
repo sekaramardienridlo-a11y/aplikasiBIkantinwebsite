@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pesanan extends Model
 {
-    protected $table = 'pesanan'; // Menghubungkan ke tabel 'pesanan'
+    protected $table = 'transaksi';
+    protected $primaryKey = 'id_transaksi';
     protected $guarded = [];
-    public $timestamps = false; //
+    public $timestamps = false;
 
-    // Relasi ke tabel menu (opsional jika ada id_menu)
     public function menu()
     {
-        return $this->belongsTo(Menu::class, 'id_menu');
+        return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');
     }
 }

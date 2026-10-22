@@ -19,13 +19,13 @@
                 <p class="text-muted">{{ $m->deskripsi }}</p>
                 <h6>Rp{{ number_format($m->harga) }}</h6>
                 <form action="/siswa/pesanan/store" method="POST">
-                    @csrf
-                    <input type="hidden" name="menu_id" value="{{ $m->id }}">
-                    <div class="input-group mb-2">
-                        <input type="number" name="jumlah" value="1" min="1" class="form-control">
-                        <button class="btn btn-primary" type="submit">Pesan</button>
-                    </div>
-                </form>
+    @csrf
+    <input type="hidden" name="menu_id" value="{{ $p->menu->nama_menu ?? $p->menu->nama ?? '-' }}">
+    <div class="input-group mb-2">
+        <input type="number" name="jumlah" value="1" min="1" class="form-control">
+        <button class="btn btn-primary" type="submit">Pesan</button>
+    </div>
+</form>
             </div>
         </div>
         @endforeach
@@ -39,7 +39,7 @@
         <tbody>
             @foreach($pesanans as $p)
             <tr>
-                <td>{{ $p->menu_id }}</td>
+                <td>{{ $p->menu->nama_menu ?? $p->menu->nama ?? 'Menu Tidak Ditemukan' }}</td>
                 <td>{{ $p->jumlah }}</td>
                 <td><span class="badge bg-warning text-dark">{{ $p->status }}</span></td>
             </tr>
