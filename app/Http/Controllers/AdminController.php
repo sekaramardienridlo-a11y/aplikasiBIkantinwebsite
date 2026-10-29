@@ -10,36 +10,26 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $menus = Menu::all(); //
-        $pesanans = Pesanan::all(); //
-        return view('admin.dashboard', compact('menus', 'pesanans')); //
+        $menus = Menu::all();
+        
+        // Mengambil semua pesanan siswa beserta detail menunya
+        $pesanans = Pesanan::with('menu')
+            ->whereNotNull('id_menu')
+            ->where('jumlah', '>', 0)
+            ->orderBy('id_transaksi', 'desc')
+            ->get();
+
+        return view('admin.dashboard', compact('menus', 'pesanans'));
     }
 
-    // Tambah Menu Baru
-    public function storeMenu(Request $request)
-    {
-        Menu::create([
-            'nama_menu' => $request->nama_menu,
-            'harga' => $request->harga,
-            'kategori' => $request->kategori,
-            'deskripsi' => $request->deskripsi,
-        ]);
-        return back()->with('success', 'Menu berhasil ditambahkan');
-    }
-
-    // Hapus Menu
-    public function deleteMenu($id)
-    {
-        Menu::destroy($id);
-        return back()->with('success', 'Menu berhasil dihapus');
-    }
-
-    // Update Status Pesanan ("Menunggu Konfirmasi" -> "Sedang Dimasak" -> "Siap Diambil" -> "Selesai")
     public function updateStatus(Request $request, $id)
     {
-        Pesanan::where('id', $id)->update([
-            'status' => $request->status
-        ]);
-        return back()->with('success', 'Status pesanan berhasil diperbarui');
+        $pesanan = Pesanan::find($id);
+        if ($pesanan) {
+            $pesanan->status = $request->status;
+            $pesanan->save();
+        }
+
+        return back()->with('success', 'Status pesanan berhasil diperbarui!');
     }
 }
