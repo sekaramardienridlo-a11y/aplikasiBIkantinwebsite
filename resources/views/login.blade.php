@@ -13,7 +13,7 @@
     <form action="/login" method="POST">
         @csrf
         <div class="mb-3">
-            <label>Username</label>
+            <label>NIS</label>
             <input type="text" name="username" class="form-control" required>
         </div>
         <div class="mb-3">
